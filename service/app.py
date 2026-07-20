@@ -15,6 +15,7 @@ Probar:
 from __future__ import annotations
 
 import base64
+import os
 from typing import Optional
 
 import cv2
@@ -37,6 +38,21 @@ except ModuleNotFoundError:  # pragma: no cover
 
 
 app = FastAPI(title="Tourfly · Preproceso geométrico", version="0.1.0")
+
+# Tope de resolución de trabajo. Una foto muy grande (6000px+) no entra en la
+# RAM de una instancia chica y el proceso muere. Se achica al lado mayor = MAX_DIM
+# antes de procesar (para un paso previo a la IA, esta resolución sobra). Subir
+# GEOMETRIC_MAX_DIM cuando la instancia tenga más memoria.
+MAX_DIM = int(os.environ.get("GEOMETRIC_MAX_DIM", "3000"))
+
+
+def _fit_working_size(image: np.ndarray) -> np.ndarray:
+    h, w = image.shape[:2]
+    longest = max(h, w)
+    if longest <= MAX_DIM:
+        return image
+    scale = MAX_DIM / float(longest)
+    return cv2.resize(image, (max(1, int(w * scale)), max(1, int(h * scale))), interpolation=cv2.INTER_AREA)
 
 
 @app.get("/", response_class=HTMLResponse)
@@ -68,6 +84,8 @@ async def preprocess(
         image = decode_image(raw)  # respeta orientación EXIF
     except ValueError:
         raise HTTPException(status_code=415, detail="Formato de imagen no soportado")
+
+    image = _fit_working_size(image)  # achica si es muy grande (memoria)
 
     config = PreprocessConfig(
         enable_min_crop=enable_crop,
