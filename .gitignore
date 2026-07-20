@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+venv/
+# salidas de prueba
+*_antes.*
+*_despues.*
+resultado.jpg
+comparacion.jpg

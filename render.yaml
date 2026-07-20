@@ -1,0 +1,15 @@
+# Blueprint de Render para desplegar el micro-servicio con un click.
+# En Render: New → Blueprint → apuntar al repo que contenga esta carpeta.
+# Deja una URL pública (ej. https://tourfly-geometric-preprocess.onrender.com).
+services:
+  - type: web
+    name: tourfly-geometric-preprocess
+    runtime: docker
+    dockerfilePath: ./service/Dockerfile
+    dockerContext: .
+    plan: starter        # 512 MB; suficiente para fotos de celular. Subir si hace falta.
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: PORT
+        value: 8000
