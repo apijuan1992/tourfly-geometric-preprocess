@@ -184,7 +184,7 @@ INDEX_HTML = """<!doctype html>
     </div>
 
     <div class="controls">
-      <label>Corrección máx.: <input id="maxcorr" type="range" min="2" max="30" step="1" value="30"><span id="maxcorrVal">30°</span></label>
+      <label>Corrección máx.: <input id="maxcorr" type="range" min="2" max="40" step="1" value="40"><span id="maxcorrVal">40°</span></label>
       <label><input id="crop" type="checkbox" checked> Recortar bordes vacíos</label>
       <label><input id="persp" type="checkbox" checked> Corregir perspectiva</label>
       <button id="go" disabled>Procesar</button>
