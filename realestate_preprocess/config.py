@@ -35,8 +35,9 @@ class PreprocessConfig:
     enable_leveling: bool = True
     enable_perspective: bool = True
     # Límite de rotación aplicada (seguridad anti-deformación). Una foto no
-    # suele estar más torcida que esto; recortar acá evita warps agresivos.
-    max_correction_deg: float = 12.0
+    # suele estar más torcida que esto; recortar acá evita warps agresivos y
+    # limita el daño si la detección se equivoca (gran angular, líneas curvas).
+    max_correction_deg: float = 30.0
 
     # --- Distorsión de lente ---
     # (k1, k2, p1, p2, k3). Si es None NO se corrige (adivinarlo es riesgoso).
